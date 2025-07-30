@@ -133,6 +133,32 @@ nav a:hover,nav a.active{background:var(--brand);color:#fff}
 .card-large i {
   color: rgba(255, 255, 255, .2);
 }
+  .hamburger-btn {
+  display: none;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  color: var(--brand);
+}
+
+@media(max-width: 768px){
+  .hamburger-btn {
+    display: block;
+  }
+  .nav-list {
+    display: none;
+    flex-direction: column;
+    background: #fff;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+  }
+  .nav-list.active {
+    display: flex;
+  }
+}
+
 
 @media (max-width: 768px) {
   .card-large {
@@ -173,7 +199,8 @@ footer{background:rgb(143,51,51);color:#ccc;padding:30px 20px;font-size:.95rem;m
 
 <!-- ===== NAV ===== -->
 <nav>
-  <ul>
+  <button id="hamburger" class="hamburger-btn">☰</button>
+  <ul id="nav-list" class="nav-list">
     <li><a class="active" href="dashboard.php"><i class="fa fa-chart-line"></i>Dashboard</a></li>
     <li><a href="admin_pannel.php"><i class="fa fa-box"></i>Products</a></li>
     <li><a href="inventory.php"><i class="fa fa-warehouse"></i>Inventory</a></li>
@@ -298,4 +325,8 @@ setInterval(()=>{
       drawChart(c);
     }).catch(console.error);
 },10000);
+
+  document.getElementById('hamburger').addEventListener('click', function(){
+  document.getElementById('nav-list').classList.toggle('active');
+});
 </script>
