@@ -1,0 +1,100 @@
+<!-- R.R. Business – Admin Login (fixed JS) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>R.R. Business – Admin Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ------------- SAME CSS ------------- */
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+    body{min-height:100vh;background:linear-gradient(to right,#fa709a,#fee140);
+         display:flex;align-items:center;justify-content:center;overflow:hidden;}
+    .login-wrapper{width:90%;max-width:420px;background:rgba(255,255,255,.1);
+      border-radius:20px;backdrop-filter:blur(15px);box-shadow:0 8px 32px rgba(0,0,0,.2);
+      padding:40px 30px;animation:slideIn 1s ease-out forwards;transform:translateY(30px);opacity:0;}
+    @keyframes slideIn{to{transform:translateY(0);opacity:1;}}
+    .login-wrapper h2{text-align:center;color:#fff;margin-bottom:25px;font-weight:600;font-size:24px;}
+    .input-group{position:relative;margin-bottom:20px;}
+    .input-group input{width:100%;padding:12px 45px 12px 40px;border:none;border-radius:12px;
+      background:rgba(255,255,255,.9);font-size:14px;outline:none;color:#333;}
+    .input-group .fa{position:absolute;top:50%;left:15px;transform:translateY(-50%);color:#777;}
+    .toggle-password{position:absolute;top:50%;right:15px;transform:translateY(-50%);
+      cursor:pointer;color:#555;font-size:14px;}
+    button{width:100%;padding:12px;background:#ff4e50;border:none;color:white;font-weight:600;
+      font-size:15px;border-radius:12px;cursor:pointer;transition:background .3s ease;margin-top:10px;}
+    button:hover{background:#d8353a;}
+    .error{color:red;font-size:13px;text-align:center;display:none;margin-bottom:10px;}
+    .error.shake{animation:shake .35s;}
+    @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}
+                     75%{transform:translateX(5px);}}
+    .footer-text{text-align:center;margin-top:20px;font-size:13px;color:#eee;}
+  </style>
+</head>
+<body>
+  <div class="login-wrapper">
+    <h2>🔐 R.R. Business Login</h2>
+    <div class="error" id="error-msg">Invalid ID or Password</div>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <i class="fa fa-user"></i>
+        <input type="text" id="username" placeholder="Enter ID" required />
+      </div>
+
+      <div class="input-group">
+        <i class="fa fa-lock"></i>
+        <input type="password" id="password" placeholder="Enter Password" required />
+        <span class="toggle-password" onclick="togglePassword()">👁️</span>
+      </div>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <div class="footer-text">© 2025 R.R. Business</div>
+  </div>
+
+  <script>
+  /* 👁️ toggle password visibility */
+  function togglePassword(){
+    const pwd=document.getElementById('password');
+    const icon=document.querySelector('.toggle-password');
+    if(pwd.type==='password'){pwd.type='text';icon.textContent='🙈';}
+    else{pwd.type='password';icon.textContent='👁️';}
+  }
+
+  /* 🚀 AJAX login */
+  document.getElementById('loginForm').addEventListener('submit', async e=>{
+    e.preventDefault();
+    const uname=document.getElementById('username').value.trim();
+    const pwd  =document.getElementById('password').value.trim();
+    const err  =document.getElementById('error-msg');
+    err.style.display='none';
+
+    try{
+      const res = await fetch('login_backend.php', {
+  method: 'POST',
+  credentials: 'include', // ✅ SESSION के लिए जरूरी है
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  body: `username=${encodeURIComponent(uname)}&password=${encodeURIComponent(pwd)}`
+});
+      const text = (await res.text()).trim();
+      console.log('Login Response:',text);
+
+      if(text==='success'){
+        window.location.href='dashboard.php';         // redirect
+      }else{
+        err.style.display='block';
+        err.classList.remove('shake'); void err.offsetWidth; err.classList.add('shake');
+      }
+    }catch(ex){
+      console.error('AJAX error:',ex);
+      err.style.display='block';
+      err.textContent='Server error! Try again.';
+    }
+  });
+  </script>
+</body>
+</html>

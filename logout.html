@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Logout - R.R. Business</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+        .msg {
+            background: white;
+            padding: 30px 40px;
+            box-shadow: 0 0 10px #ccc;
+            border-radius: 8px;
+            text-align: center;
+        }
+        a {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Show confirmation on logout
+        window.onload = function () {
+            const confirmLogout = confirm("Do you want to log out?");
+            if (confirmLogout) {
+                sessionStorage.clear();
+                localStorage.removeItem('authToken');
+                document.querySelector('.msg').style.display = 'block';
+                setTimeout(() => {
+                    window.location.replace('login.html');
+                }, 2000);
+            } else {
+                window.location.replace('dashboard.php');
+            }
+        };
+    </script>
+    <div class="msg" style="display: none;">
+        <h2>You have been logged out</h2>
+        <p>Redirecting to login...</p>
+        <p><a href="login.html">Click here if you are not redirected automatically</a></p>
+    </div>
+</body>
+</html>
