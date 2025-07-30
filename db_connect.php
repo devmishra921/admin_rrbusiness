@@ -1,7 +1,7 @@
 <?php
 // db_connect.php
 $host = 'db4free.net';
-$user = 'rradmin';           // your MySQL username
+$user = 'rr_business';           // your MySQL username
 $pass = 'RrBiz@2025';        // your password
 $db   = 'rrbusinessdb';      // your database name
 
